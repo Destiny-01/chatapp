@@ -1,0 +1,197 @@
+<%- include('partials/response.ejs',{success,error}) %>
+
+<div class="col-9" id="rooms">
+  <i class="fa fa-bars" onclick="openSidebar()"></i>
+  <div class="head">
+    <h4>Recently Created Public Rooms</h4>
+    <button
+      class="btn btn-primary"
+      data-toggle="modal"
+      data-target="#createRoom"
+    >
+      New
+    </button>
+  </div>
+  <div class="input-group">
+    <input
+      class="form-control"
+      placeholder="Search Room by Room Name Or Id"
+      name="search"
+      id="search"
+      type="text"
+      required
+    />
+
+    <div class="input-group-append">
+      <button type="submit" class="btn btn-primary" onclick="submitSearch()">
+        <i class="fa fa-search"></i>
+      </button>
+    </div>
+  </div>
+
+  <div id="search-results">
+    <i class="fas fa-arrow-left" onclick="window.location.reload()">back</i>
+  </div>
+  <div id="public-rooms" class="public-rooms">
+    <% rooms.forEach(room => { %>
+    <div class="room-link">
+      <div class="card no-outline mb-2 mt-2 room-card">
+        <div class="card-body">
+          <div class="title">
+            <h6 class="name"><%=room.name%></h6>
+            <button
+              onclick="joinRoom('<%=room.room_id%>')"
+              class="btn btn-primary btn-sm"
+            >
+              Join
+            </button>
+          </div>
+          <div class="member-count text-muted">
+            <%=room.users.length%> Members
+          </div>
+
+          <p class="description"><%=room.description%></p>
+        </div>
+      </div>
+    </div>
+    <hr />
+    <% }) %>
+  </div>
+</div>
+
+<div class="modal fade" id="userModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Update User Details</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="needs-validation" novalidate action="/rooms" method="post">
+          <div class="form-group">
+            <label for="name">Username</label>
+            <input
+              type="text"
+              class="form-control"
+              id="username"
+              name="username"
+              value="Abobi"
+              required
+            />
+            <div class="invalid-feedback">Please provide a valid username.</div>
+            <!-- value="<%# user.username %> " -->
+          </div>
+          <div class="form-group">
+            <label for="description">Password</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              name="password"
+            />
+
+            <small class="form-text text-muted"
+              >Leave blank if you don't want to update password</small
+            >
+          </div>
+          <div class="form-group">
+            <label for="confirmpassword">Confirm Password</label>
+            <input
+              type="password"
+              class="form-control"
+              id="confirmpassword"
+              name="confirmpassword"
+            />
+            <small class="form-text text-muted"
+              >Leave blank if you don't want to update password</small
+            >
+          </div>
+          <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button
+          class="btn btn-danger"
+          onclick="deleteUser()"
+          data-dismiss="modal"
+        >
+          Delete Account Permanently!!!
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="createRoom">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createRoomHeader">Create Room</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/rooms" method="post" class="needs-validation" novalidate>
+          <div class="form-group">
+            <label for="name">Room Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              name="name"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            <input
+              type="text"
+              class="form-control"
+              id="description"
+              name="description"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="type">Type</label><br />
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="type"
+                id="public"
+                value="public"
+                required
+              />
+              <label class="form-check-label" for="public">Public</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input
+                class="form-check-input"
+                type="radio"
+                name="type"
+                id="private"
+                value="private"
+                required
+              />
+              <label class="form-check-label" for="private">Private</label>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

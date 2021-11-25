@@ -1,0 +1,67 @@
+<div class="col-3 rooms-sidebar" id="sidebar">
+  <div class="card no-outline">
+    <div class="card-body">
+      <i class="fa fa-times" onclick="closeSidebar()"></i>
+      <small>Logged in as</small><br />
+      <b
+        >Abobi
+        <button
+          type="button"
+          data-toggle="modal"
+          class="btn pb-2"
+          data-target="#userModal"
+        >
+          <i class="fa fa-pen text-muted"></i>
+        </button>
+        <br
+      /></b>
+    </div>
+  </div>
+  <hr />
+  <form class="needs-validation" novalidate method="post">
+    <div class="form-group mb-3">
+      <label>Join a room</label>
+      <a href="/rooms"><i class="fa fa-plus"></i></a>
+      <input type="text" class="form-control" placeholder="Room Id" required />
+      <div class="invalid-feedback">Please provide a valid room id.</div>
+    </div>
+    <input
+      type="submit"
+      value="Join"
+      class="btn btn-outline-primary btn-block"
+    />
+  </form>
+
+  <hr />
+  <div class="all-rooms">
+    <script>
+      console.log("<%- currentUser.roomsIn.length%>");
+    </script>
+    <div class="room-link">
+      <%# currentUser.roomsIn.forEach(room => { %>
+      <div
+        class="
+          card
+          no-outline
+          mb-2
+          room-card
+          <%#
+          room._id===currentRoom._id
+          ?
+          'active'
+          :
+          ''%>
+        "
+      >
+        <div class="card-body">
+          <span class="name"><%# room.name %> </span><br />
+          <span class="member-count">
+            <small><%# room.users.length %> Members</small>
+          </span>
+        </div>
+      </div>
+    </div>
+    <hr />
+    <%# }) %>
+  </div>
+</div>
